@@ -1,4 +1,8 @@
 #include "mainwindow.h"
+#include "deepseek_api_services.h"
+
+#include <iostream>
+
 
 #include <QApplication>
 
