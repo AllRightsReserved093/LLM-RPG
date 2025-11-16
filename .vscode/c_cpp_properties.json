@@ -3,7 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "D:\\Qt\\6.9.2\\llvm-mingw_64\\include",
+                "D:\\Qt\\6.9.2\\mingw_64\\include"
             ],
             "defines": [
                 "_DEBUG",
@@ -11,7 +13,7 @@
                 "_UNICODE"
             ],
             "cStandard": "c17",
-            "intelliSenseMode": "windows-msvc-x64",
+            "intelliSenseMode": "windows-clang-x64",
             "compilerPath": "D:\\Qt\\Tools\\llvm-mingw1706_64\\bin\\clang.exe"
         }
     ],
