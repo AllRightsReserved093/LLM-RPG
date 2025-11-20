@@ -2,5 +2,10 @@
     "C_Cpp.default.compileCommands": "D:/qtProject/LLM-RPG/build/Desktop_Qt_6_9_2_llvm_mingw_64_bit-Debug/compile_commands.json",
     
     "C_Cpp.default.compilerPath": "D:/Qt/Tools/llvm-mingw1706_64/bin/clang.exe",
-    "C_Cpp.default.intelliSenseMode": "windows-clang-x64"
+    "C_Cpp.default.intelliSenseMode": "windows-clang-x64",
+    "files.associations": {
+        "*.fsh": "glsl",
+        "*.vsh": "glsl",
+        "string": "cpp"
+    }
 }

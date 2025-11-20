@@ -25,7 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         src/deepseek_api_services.h src/deepseek_api_services.cpp
-        src/json_handler.h src/json_handler.cpp
+        src/json_message_handler.h src/json_message_handler.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET LLM-RPG APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

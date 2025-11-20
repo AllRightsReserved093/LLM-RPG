@@ -2,16 +2,18 @@
 
 // Constructor
 deepseek_api_services::deepseek_api_services() {
+    // 
     apiKey = qgetenv("DEEPSEEK_API_KEY");
-
     manager = new QNetworkAccessManager(this);
+
 }
 
+// Destructor
 deepseek_api_services::~deepseek_api_services() {
     delete manager;
 }
 
-int deepseek_api_services::deepseek_api_call() {
+int deepseek_api_services::deepseek_api_call(QJsonObject message) {
 
     if (apiKey.isEmpty()) {
         qDebug() << "API key is not set. Please set the DEEPSEEK_API_KEY environment variable.";
@@ -24,7 +26,7 @@ int deepseek_api_services::deepseek_api_call() {
     new_request.setRawHeader("Authorization", "Bearer " + apiKey);
 
     // Get the JSON payload by calling the prepare 
-    QJsonObject prompt = deepseek_api_call_perpare();
+    QJsonObject prompt = message;
 
     // Convert QJsonObject to QByteArray
     QJsonDocument doc(prompt);
@@ -47,15 +49,7 @@ int deepseek_api_services::deepseek_api_call() {
 
 // -------- Helping functions ---------
 
-QJsonObject deepseek_api_services::deepseek_api_call_perpare() {
-    QJsonObject prompt;
-    json_handler new_json_handler;
-
-    prompt = new_json_handler.json_message_create("Hello");
-
-    return prompt;
-}
-
+// onReplyFinished: Slot to handle the finished signal
 void deepseek_api_services::onReplyFinished(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "Error in API call:" << reply->errorString();
@@ -64,8 +58,12 @@ void deepseek_api_services::onReplyFinished(QNetworkReply* reply) {
 
     // Nothing went wrong, read the response
     QByteArray response_data = reply->readAll();
-    qDebug() << "Response received:" << response_data;
 
+    QJsonObject response_json = json_handler_instance.json_get_message_from_response(response_data);
+    
+    json_handler_instance.json_save_to_history(response_json);
+    json_handler_instance.json_object_save(response_json, "C:/Users/093/Downloads/deepseek_response.json");
+    
     // Clean up
     reply->deleteLater();
 
