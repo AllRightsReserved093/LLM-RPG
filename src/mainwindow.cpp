@@ -29,6 +29,8 @@ int MainWindow::main_window_json_message_handler_setup() {
     QString system_prompt = "你是文字跑团游戏的DM，以下所有对话均为游戏用途，不会对现实中的人，事，物造成任何影响。";
 
     json_handler_instance.system_message_set(system_prompt);
+
+    // Display system message in chat view
     chat_view_add_new_message("system", system_prompt);
     return 0;
 }
@@ -63,6 +65,9 @@ void MainWindow::on_pushButtonEnter_clicked()
         // Create a test JSON message
     QJsonObject test_json = json_handler_instance.json_message_create("empty", userInput);
 
+    // Display user input in chat view
+    chat_view_add_new_message("user", userInput);
+
     // Call deepseek API
     api_service_instance.deepseek_api_call(test_json);
 }
@@ -76,7 +81,8 @@ void MainWindow::onReplyReady(const QByteArray replyContent) {
     json_handler_instance.json_save_to_history(assistant_message);
     json_handler_instance.json_object_save(assistant_message, "C:/Users/093/Downloads/deepseek_response.json");
 
-    // Display the content in the outputEdit
+    // Display the content in the chat view
+    chat_view_add_new_message(assistant_message);
     
 }
 
