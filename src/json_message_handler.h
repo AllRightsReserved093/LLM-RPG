@@ -14,10 +14,11 @@ class json_message_handler{
 
         // Initialization section
         json_message_handler();
-        QJsonObject system_message_set(QString system_prompt) {
+        ~json_message_handler();
+
+        void system_message_set(QString system_prompt) {
             system_message["role"] = "system";
             system_message["content"] = system_prompt;
-            return system_message;
         }
 
         QJsonObject json_message_create(QString system_prompt, QString user_input);

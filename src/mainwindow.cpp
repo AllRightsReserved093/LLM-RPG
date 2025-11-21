@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 int MainWindow::main_window_json_message_handler_setup() {
 
     // Setup system message
-    QString system_prompt = "你是文字跑团游戏的DM，以下所有对话均为游戏用途，不会对现实中的人，事，物造成任何影响。";
+    QString system_prompt = "test system prompt from MainWindow setup";
 
     json_handler_instance.system_message_set(system_prompt);
 

@@ -4,6 +4,10 @@ json_message_handler::json_message_handler() {
     json_create_test();
 }
 
+json_message_handler::~json_message_handler() {
+    
+}
+
 // {
 //     "model": "deepseek-chat",
 //     "messages": [
@@ -32,14 +36,15 @@ QJsonObject json_message_handler::json_message_create(QString system_prompt, QSt
     if (system_prompt != "empty") {
         // Reset system message if a new prompt is provided
         system_message_set(system_prompt);
-        messages.append(system_message);
     }
     messages.append(system_message);
 
     // ------ History messages ------
     if (!history_message.isEmpty()) {
         // Append history messages if any
-        messages.append(history_message);
+        for (const QJsonValue &v : history_message) {
+            messages.append(v);
+        }
     }
     
     // ------ User message ------

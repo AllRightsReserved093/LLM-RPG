@@ -6,6 +6,15 @@ deepseek_api_services::deepseek_api_services() {
     // 
     apiKey = qgetenv("DEEPSEEK_API_KEY");
     manager = new QNetworkAccessManager(this);
+
+    // Connect the finished signal to a lambda function to handle the response
+    // Connect(sender, signal, receiver, slot)
+    //      sender:   manager = QNetworkAccessManager*, send a signal when finished
+    //      signal:   &QNetworkAccessManager::finished is the signal that manager will send
+    //      receiver: this = deepseek_api_services*, the receiver of the signal
+    //      slot:     &deepseek_api_services::onReplyFinished is the slot that will be called when the signal is received
+    // QT requires the slot to be a member function of the receiver class
+    connect(manager, &QNetworkAccessManager::finished, this, &deepseek_api_services::onReplyFinished);
 }
 
 // Destructor
@@ -32,17 +41,10 @@ int deepseek_api_services::deepseek_api_call(QJsonObject message) {
     QJsonDocument doc(prompt);
     QByteArray body = doc.toJson(QJsonDocument::Compact);
 
+    qDebug() << "Request Body:" << body;
+
     // Send the POST request
     QNetworkReply *reply = manager->post(new_request, body);
-
-    // Connect the finished signal to a lambda function to handle the response
-    // Connect(sender, signal, receiver, slot)
-    //      sender:   manager = QNetworkAccessManager*, send a signal when finished
-    //      signal:   &QNetworkAccessManager::finished is the signal that manager will send
-    //      receiver: this = deepseek_api_services*, the receiver of the signal
-    //      slot:     &deepseek_api_services::onReplyFinished is the slot that will be called when the signal is received
-    // QT requires the slot to be a member function of the receiver class
-    connect(manager, &QNetworkAccessManager::finished, this, &deepseek_api_services::onReplyFinished);
 
     return 0;
 }
@@ -53,6 +55,8 @@ int deepseek_api_services::deepseek_api_call(QJsonObject message) {
 void deepseek_api_services::onReplyFinished(QNetworkReply* reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "Error in API call:" << reply->errorString();
+        qDebug() << "HTTP status code:" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        reply->deleteLater();
         return;
     }
 
