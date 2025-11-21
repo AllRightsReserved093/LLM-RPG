@@ -1,11 +1,11 @@
 #include "deepseek_api_services.h"
+#include <qjsondocument.h>
 
 // Constructor
 deepseek_api_services::deepseek_api_services() {
     // 
     apiKey = qgetenv("DEEPSEEK_API_KEY");
     manager = new QNetworkAccessManager(this);
-
 }
 
 // Destructor
@@ -57,13 +57,13 @@ void deepseek_api_services::onReplyFinished(QNetworkReply* reply) {
     }
 
     // Nothing went wrong, read the response
-    QByteArray response_data = reply->readAll();
+    QByteArray response_data = reply->readAll();                // Read the response data
 
-    QJsonObject response_json = json_handler_instance.json_get_message_from_response(response_data);
-    
-    json_handler_instance.json_save_to_history(response_json);
-    json_handler_instance.json_object_save(response_json, "C:/Users/093/Downloads/deepseek_response.json");
-    
+    std::cout << response_data.toStdString() << std::endl;
+    // Send the replyReady signal with the response JSON object
+    // Suppose to be receive by MainWindow::onReplyReady
+    emit replyReady(response_data);
+
     // Clean up
     reply->deleteLater();
 

@@ -1,6 +1,6 @@
 #include "json_message_handler.h"
 
-json_handler::json_handler() {
+json_message_handler::json_message_handler() {
     json_create_test();
 }
 
@@ -18,7 +18,7 @@ json_handler::json_handler() {
 // Call json_systmes_create()
 // Call json_usermes_create(user_input)
 // Combine them into the final QJsonObject and return
-QJsonObject json_handler::json_message_create(QString system_prompt, QString user_input) {
+QJsonObject json_message_handler::json_message_create(QString system_prompt, QString user_input) {
     QJsonObject message;
 
     // Set the model
@@ -56,14 +56,13 @@ QJsonObject json_handler::json_message_create(QString system_prompt, QString use
 }
 
 
-int json_handler::json_save_to_history(QJsonObject history_message) {
+int json_message_handler::json_save_to_history(QJsonObject history_message) {
     this->history_message.append(history_message);
     return 0;
 }
 
 
-
-int json_handler::json_object_save(QJsonObject json_obj, QString file_path) {
+int json_message_handler::json_object_save(QJsonObject json_obj, QString file_path) {
     QJsonDocument doc(json_obj);
     QByteArray byte_array = doc.toJson(QJsonDocument::Indented);
 
@@ -87,7 +86,7 @@ int json_handler::json_object_save(QJsonObject json_obj, QString file_path) {
 // --------- Helping functions ---------
 
 // Create system message JSON object
-QJsonObject json_handler::json_systmes_create(QString system_prompt) {
+QJsonObject json_message_handler::json_systmes_create(QString system_prompt) {
     QJsonObject system_message;
     system_message["role"] = "system";
     system_message["content"] = system_prompt;
@@ -95,7 +94,7 @@ QJsonObject json_handler::json_systmes_create(QString system_prompt) {
 }
 
 // Create user message JSON object
-QJsonObject json_handler::json_usermes_create(QString user_input) {
+QJsonObject json_message_handler::json_usermes_create(QString user_input) {
     QJsonObject user_message;
     user_message["role"] = "user";
     user_message["content"] = user_input;
@@ -103,7 +102,7 @@ QJsonObject json_handler::json_usermes_create(QString user_input) {
 }
 
 // This is for testing and try out purposes
-QJsonObject json_handler::json_create_test() {
+QJsonObject json_message_handler::json_create_test() {
     QJsonObject message;
 
     message["model"] = "deepseek-chat";

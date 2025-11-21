@@ -1,32 +1,38 @@
 #ifndef DEEPSEEK_API_SERVICES_H
 #define DEEPSEEK_API_SERVICES_H
 
-#include "json_message_handler.h"
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 #include <QtGlobal>
 #include <QByteArray>
+
+#include <iostream>
+
 
 
 using namespace std;
     
 class deepseek_api_services : public QObject {
+    Q_OBJECT
+
     public:
         deepseek_api_services();
         ~deepseek_api_services();
 
-        // Use the provided json_handler instance for JSON operations
-        int deepseek_api_json_object(json_handler user_json_handler_instance) {
-            json_handler_instance = user_json_handler_instance;
-            return 0;
-        }
-
         int deepseek_api_call(QJsonObject message);
+    
+    signals:
+        void replyReady(const QByteArray replyContent);
+
     private:
         // Store the API key
         QByteArray apiKey;
-        json_handler json_handler_instance;
 
         QNetworkAccessManager *manager = nullptr;
 

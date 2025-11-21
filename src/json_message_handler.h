@@ -8,12 +8,12 @@
 #include <QFile>
 #include <QDebug>
 
-class json_handler{
+class json_message_handler{
     public:
         enum MessageRole {System, User, Assistant};    
 
         // Initialization section
-        json_handler();
+        json_message_handler();
         QJsonObject system_message_set(QString system_prompt) {
             system_message["role"] = "system";
             system_message["content"] = system_prompt;
