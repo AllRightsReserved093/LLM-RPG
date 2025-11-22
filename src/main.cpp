@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "windows/mainwindow.h"
 
 #include "deepseek_api_services.h"
 #include "json_message_handler.h"

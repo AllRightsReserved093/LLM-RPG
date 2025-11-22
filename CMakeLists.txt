@@ -9,23 +9,25 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
-find_package(Qt6 REQUIRED COMPONENTS Network)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network)
 
 set(PROJECT_SOURCES
-        src/main.cpp
-        src/mainwindow.cpp
-        src/mainwindow.h
-        src/mainwindow.ui
+    src/main.cpp
+    src/windows/mainwindow.cpp
+    src/windows/mainwindow.h
+    src/windows/mainwindow.ui
+    src/deepseek_api_services.h src/deepseek_api_services.cpp
+    src/json_message_handler.h src/json_message_handler.cpp
+    src/status_manager.h src/status_manager.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(LLM-RPG
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        src/deepseek_api_services.h src/deepseek_api_services.cpp
-        src/json_message_handler.h src/json_message_handler.cpp
+        src/windows/mainmenu.h src/windows/mainmenu.cpp src/windows/mainmenu.ui
+        src/windows/chatviewpage.h src/windows/chatviewpage.cpp src/windows/chatviewpage.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET LLM-RPG APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -63,6 +65,11 @@ set_target_properties(LLM-RPG PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+)
+
+target_include_directories(LLM-RPG PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/windows
 )
 
 include(GNUInstallDirs)

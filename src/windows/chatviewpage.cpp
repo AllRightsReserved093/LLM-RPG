@@ -1,49 +1,44 @@
-#include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "chatviewpage.h"
+#include "ui_chatviewpage.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+ChatViewPage::ChatViewPage(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::ChatViewPage)
 {
     ui->setupUi(this);
 
-    // Setup JSON message handler
-    // Get error code for debugging
-    int error_code = main_window_json_message_handler_setup();
+    // Setup JSON message handler for the chat page
+    int error_code = setup_json_message_handler();
+    Q_UNUSED(error_code);
 
     // Connect the replyReady signal from api_service_instance to the onReplyReady slot
     connect(&api_service_instance,
             &deepseek_api_services::replyReady,
             this,
-            &MainWindow::onReplyReady);
+            &ChatViewPage::onReplyReady);
 }
 
-MainWindow::~MainWindow()
+ChatViewPage::~ChatViewPage()
 {
     delete ui;
 }
 
-int MainWindow::main_window_json_message_handler_setup() {
-
-    // Setup system message
-    QString system_prompt = "test system prompt from MainWindow setup";
-
+int ChatViewPage::setup_json_message_handler() {
+    QString system_prompt = "test system prompt from ChatViewPage setup";
     json_handler_instance.system_message_set(system_prompt);
-
-    // Display system message in chat view
     chat_view_add_new_message("system", system_prompt);
     return 0;
 }
 
 // Add new message to chat view
-int MainWindow::chat_view_add_new_message(QString role, QString content) {
+int ChatViewPage::chat_view_add_new_message(QString role, QString content) {
     QString display_text = QString("[%1]: %2").arg(role, content);
     ui->chatView->append(display_text);
     return 0;
 }
 
 // Overloaded function to add new message from QJsonObject
-int MainWindow::chat_view_add_new_message(QJsonObject message_obj) {
+int ChatViewPage::chat_view_add_new_message(QJsonObject message_obj) {
     QString role = message_obj["role"].toString();
     QString content = message_obj["content"].toString();
     return chat_view_add_new_message(role, content);
@@ -53,7 +48,7 @@ int MainWindow::chat_view_add_new_message(QJsonObject message_obj) {
 // Clean input in the input field
 // Append to deepseek API call message
 // Call deepseek API
-void MainWindow::on_pushButtonEnter_clicked()
+void ChatViewPage::on_pushButtonEnter_clicked()
 {
     // Get user input
     QString userInput = ui->inputEdit->text();
@@ -62,7 +57,6 @@ void MainWindow::on_pushButtonEnter_clicked()
     ui->inputEdit->clear();
 
     // Append to deepseek API call message
-        // Create a test JSON message
     QJsonObject test_json = json_handler_instance.json_message_create("empty", userInput);
 
     // Display user input in chat view
@@ -73,7 +67,7 @@ void MainWindow::on_pushButtonEnter_clicked()
 }
 
 // Slot to handle the reply from the API
-void MainWindow::onReplyReady(const QByteArray replyContent) {
+void ChatViewPage::onReplyReady(const QByteArray replyContent) {
     // Get the content as QJsonObject, which only include role and content
     QJsonObject assistant_message = json_handler_instance.json_get_message_from_response(replyContent);
 
@@ -83,6 +77,4 @@ void MainWindow::onReplyReady(const QByteArray replyContent) {
 
     // Display the content in the chat view
     chat_view_add_new_message(assistant_message);
-    
 }
-
