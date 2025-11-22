@@ -1,5 +1,5 @@
-#ifndef CHATVIEWPAGE_H
-#define CHATVIEWPAGE_H
+#ifndef CHATVIEW_H
+#define CHATVIEW_H
 
 #include <QWidget>
 #include <QJsonObject>
@@ -8,16 +8,16 @@
 #include "deepseek_api_services.h"
 
 namespace Ui {
-class ChatViewPage;
+class ChatView;
 }
 
-class ChatViewPage : public QWidget
+class ChatView : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ChatViewPage(QWidget *parent = nullptr);
-    ~ChatViewPage();
+    explicit ChatView(QWidget *parent = nullptr);
+    ~ChatView();
 
     int chat_view_add_new_message(QString role, QString content);
     int chat_view_add_new_message(QJsonObject message_obj);
@@ -27,7 +27,7 @@ private slots:
     void onReplyReady(const QByteArray replyContent);
 
 private:
-    Ui::ChatViewPage *ui;
+    Ui::ChatView *ui;
 
     // JSON handler instance, the main one for the chat page
     json_message_handler json_handler_instance;
@@ -38,4 +38,4 @@ private:
     int setup_json_message_handler();
 };
 
-#endif // CHATVIEWPAGE_H
+#endif // CHATVIEW_H

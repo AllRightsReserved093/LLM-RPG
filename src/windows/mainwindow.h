@@ -3,8 +3,11 @@
 
 #include <QMainWindow>
 
-#include "chatviewpage.h"
+#include "pagenavigator.h"
+#include "chatview.h"
 #include "mainmenu.h"
+#include "story_settings_generation/worldcreation.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,8 +24,10 @@ public:
     ~MainWindow();
 
 private:
+    PageNavigator *page_navigator;
     Ui::MainWindow *ui;
     MainMenu *main_menu_page;
-    ChatViewPage *chat_view_page;
+    ChatView *chat_view_page;
+    WorldCreation *world_creation;
 };
 #endif // MAINWINDOW_H

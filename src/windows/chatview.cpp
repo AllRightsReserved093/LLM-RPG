@@ -1,9 +1,9 @@
-#include "chatviewpage.h"
-#include "ui_chatviewpage.h"
+#include "chatview.h"
+#include "ui_chatview.h"
 
-ChatViewPage::ChatViewPage(QWidget *parent)
+ChatView::ChatView(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::ChatViewPage)
+    , ui(new Ui::ChatView)
 {
     ui->setupUi(this);
 
@@ -15,30 +15,30 @@ ChatViewPage::ChatViewPage(QWidget *parent)
     connect(&api_service_instance,
             &deepseek_api_services::replyReady,
             this,
-            &ChatViewPage::onReplyReady);
+            &ChatView::onReplyReady);
 }
 
-ChatViewPage::~ChatViewPage()
+ChatView::~ChatView()
 {
     delete ui;
 }
 
-int ChatViewPage::setup_json_message_handler() {
-    QString system_prompt = "test system prompt from ChatViewPage setup";
+int ChatView::setup_json_message_handler() {
+    QString system_prompt = "test system prompt from ChatView setup";
     json_handler_instance.system_message_set(system_prompt);
     chat_view_add_new_message("system", system_prompt);
     return 0;
 }
 
 // Add new message to chat view
-int ChatViewPage::chat_view_add_new_message(QString role, QString content) {
+int ChatView::chat_view_add_new_message(QString role, QString content) {
     QString display_text = QString("[%1]: %2").arg(role, content);
     ui->chatView->append(display_text);
     return 0;
 }
 
 // Overloaded function to add new message from QJsonObject
-int ChatViewPage::chat_view_add_new_message(QJsonObject message_obj) {
+int ChatView::chat_view_add_new_message(QJsonObject message_obj) {
     QString role = message_obj["role"].toString();
     QString content = message_obj["content"].toString();
     return chat_view_add_new_message(role, content);
@@ -48,7 +48,7 @@ int ChatViewPage::chat_view_add_new_message(QJsonObject message_obj) {
 // Clean input in the input field
 // Append to deepseek API call message
 // Call deepseek API
-void ChatViewPage::on_pushButtonEnter_clicked()
+void ChatView::on_pushButtonEnter_clicked()
 {
     // Get user input
     QString userInput = ui->inputEdit->text();
@@ -67,7 +67,7 @@ void ChatViewPage::on_pushButtonEnter_clicked()
 }
 
 // Slot to handle the reply from the API
-void ChatViewPage::onReplyReady(const QByteArray replyContent) {
+void ChatView::onReplyReady(const QByteArray replyContent) {
     // Get the content as QJsonObject, which only include role and content
     QJsonObject assistant_message = json_handler_instance.json_get_message_from_response(replyContent);
 

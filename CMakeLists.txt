@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(LLM-RPG VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -27,7 +29,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         src/windows/mainmenu.h src/windows/mainmenu.cpp src/windows/mainmenu.ui
-        src/windows/chatviewpage.h src/windows/chatviewpage.cpp src/windows/chatviewpage.ui
+        src/windows/chatview.h src/windows/chatview.cpp src/windows/chatview.ui
+        src/windows/story_settings_generation/worldcreation.h src/windows/story_settings_generation/worldcreation.cpp src/windows/story_settings_generation/worldcreation.ui
+        src/windows/pagenavigator.h src/windows/pagenavigator.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET LLM-RPG APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
